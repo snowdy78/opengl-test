@@ -1,5 +1,5 @@
 #include "SGL/ShaderProgram.hpp"
-#include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace sgl
 {
@@ -13,13 +13,13 @@ namespace sgl
 		glGenBuffers(1, &points_vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
 		glBufferData(
-			GL_ARRAY_BUFFER, point_mat3.size() * sizeof(GLfloat), &point_mat3[0],
+			GL_ARRAY_BUFFER, sizeof(glm::mat3), glm::value_ptr(point_mat3),
 			buffer_type == Static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW
 		);
 		glGenBuffers(1, &colors_vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
 		glBufferData(
-			GL_ARRAY_BUFFER, color_mat3.size() * sizeof(GLfloat), &color_mat3[0],
+			GL_ARRAY_BUFFER, sizeof(glm::mat3), glm::value_ptr(color_mat3),
 			buffer_type == Static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW
 		);
 
@@ -52,6 +52,22 @@ namespace sgl
 	void ShaderProgram::link()
 	{
 		glLinkProgram(program);
+	}
+
+	void ShaderProgram::setPoints(const glm::mat3 &mat3)
+	
+	{
+	
+		point_mat3 = mat3;
+	
+	}
+
+	void ShaderProgram::setPalette(const glm::mat3 &mat3)
+	
+	{
+	
+		color_mat3 = mat3;
+	
 	}
 
 } // namespace sgl

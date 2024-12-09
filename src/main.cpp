@@ -1,31 +1,26 @@
-#include <vector>
 #include <string>
-#include <iostream>
 #include "SGL/SGL.hpp"
 
 using namespace sgl;
 int main()
 {
     init();
-
     Window window(800, 600, "OpenGL");
-    std::vector<GLfloat> points = {
+	glm::mat3 points(
         0.0f, 0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-    };
-    std::vector<GLfloat> colors = {
+        -0.5f, -0.5f, 0.0f
+	);
+    glm::mat3 colors {
         1.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 1.0f,
     };
     ShaderBuildSystem shader{"triangle.vert", "triangle.frag"};
 
-    shader.setPoints(points.begin(), points.end());
-    shader.setPalette(colors.begin(), colors.end());
+    shader.setPoints(points);
+    shader.setPalette(colors);
     shader.build();
-
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     while (window.isOpen())
     {
         window.clear();

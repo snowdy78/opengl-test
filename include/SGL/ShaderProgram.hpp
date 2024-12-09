@@ -22,8 +22,8 @@ namespace sgl
 		GLuint points_vbo	   = 0;
 		GLuint colors_vbo	   = 0;
 		GLuint vao			   = 0;
-		std::vector<GLfloat> point_mat3;
-		std::vector<GLfloat> color_mat3;
+		glm::mat3 point_mat3;
+		glm::mat3 color_mat3;
 
 	public:
 		ShaderProgram() {}
@@ -34,21 +34,8 @@ namespace sgl
 		void attach(Shader &shader);
 		void render();
 		void link();
-		template<class It>
-		void setPoints(It begin, const It &end);
-		template<class It>
-		void setPalette(It begin, const It &end);
+		void setPoints(const glm::mat3 &mat3);
+		void setPalette(const glm::mat3 &mat3);
 	};
 
-	template<class It>
-	void ShaderProgram::setPoints(It begin, const It &end)
-	{
-		point_mat3.assign(begin, end);
-	}
-
-	template<class It>
-	void ShaderProgram::setPalette(It begin, const It &end)
-	{
-		color_mat3.assign(begin, end);
-	}
 } // namespace sgl
