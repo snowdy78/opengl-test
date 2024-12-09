@@ -6,10 +6,14 @@
 namespace sgl
 {
     class Window;
+    class Color;
 
     struct Shader;
     class ShaderProgram;
     class ShaderBuildSystem;
+    class Drawable;
+    class Transform;
+    class Component;
 
     void init();
 }
