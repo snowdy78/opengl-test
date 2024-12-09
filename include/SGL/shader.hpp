@@ -2,38 +2,22 @@
 
 #include "SGLdecl.hpp"
 #include <string>
+#include "ShaderData.hpp"
+#include "ShaderProgram.hpp"
 
 namespace sgl
 {
-    struct Shader
+    
+
+    class Shader : public ShaderProgram
     {
-        enum ShaderType
-        {
-            Vertex,
-            Fragment
-        };
-    private:
-        ShaderType type;
-        char *code = nullptr;
-        GLuint shader;
+        ShaderData vertex_shader;
+        ShaderData fragment_shader;
 
-        GLuint &operator*();
-        const GLuint &operator*() const;
-
-        friend class ShaderProgram;
-		bool loadFromFile(const std::string &path);
-
-	public:
-		Shader();
-		Shader(ShaderType type, const std::string &shader_code);
-        ~Shader();
-
-		void load(const std::string &path, ShaderType type);
-
-		Shader(const Shader &)			  = delete;
-		Shader &operator=(const Shader &) = delete;
-        ShaderType getType() const;
-        bool compile();
-        void remove();
+    public:
+        Shader(const std::string &path_to_vertex_shader, const std::string &path_to_fragment_shader);
+        void build();
+        void draw() const;
     };
+
 }

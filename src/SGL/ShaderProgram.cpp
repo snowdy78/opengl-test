@@ -35,7 +35,7 @@ namespace sgl
         need_render = true;
 	}
 
-	void ShaderProgram::attach(Shader &shader)
+	void ShaderProgram::attach(ShaderData &shader)
 	{
 		glAttachShader(program, *shader);
 	}

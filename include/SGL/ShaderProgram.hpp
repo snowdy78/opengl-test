@@ -3,7 +3,7 @@
 #include <vector>
 #include "SGLdecl.hpp"
 
-#include "Shader.hpp"
+#include "ShaderData.hpp"
 
 namespace sgl
 {
@@ -31,7 +31,7 @@ namespace sgl
 		ShaderProgram &operator=(const ShaderProgram &) = delete;
 		~ShaderProgram();
 		void bindBuffers();
-		void attach(Shader &shader);
+		void attach(ShaderData &shader);
 		void render();
 		void link();
 		void setPoints(const glm::mat3 &mat3);

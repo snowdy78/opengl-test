@@ -16,14 +16,14 @@ int main()
         0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 1.0f,
     };
-    ShaderBuildSystem shader{"triangle.vert", "triangle.frag"};
+    Shader shader{"triangle.vert", "triangle.frag"};
 
     shader.setPoints(points);
     shader.setPalette(colors);
     shader.build();
     while (window.isOpen())
     {
-        window.clear();
+        window.clear({0.0f, 1.0f, 0.0f, 1.0f});
         shader.draw();
         window.display();
         glfwPollEvents();
