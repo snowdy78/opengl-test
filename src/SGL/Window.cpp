@@ -25,8 +25,9 @@ namespace sgl
         glfwDestroyWindow(window);
     }
 
-    void Window::clear()
+    void Window::clear(const Color &color)
     {
+        glClearColor(color.r, color.g, color.b, color.a);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
