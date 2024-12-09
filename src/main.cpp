@@ -23,9 +23,9 @@ int main()
     shader.build();
     while (window.isOpen())
     {
-        window.clear({0.0f, 1.0f, 0.0f, 1.0f});
-        shader.draw();
-        window.display();
+		window.clear({0.0f, 1.0f, 0.0f, 1.0f});
+		shader.draw();
+		window.display();
         glfwPollEvents();
     }
     glfwTerminate();
