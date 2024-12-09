@@ -15,9 +15,9 @@ namespace sgl
         Shader fragment_shader;
 
     public:
-        ShaderBuildSystem(const std::string &vertex_shader_code, const std::string &fragment_shader_code);
+        ShaderBuildSystem(const std::string &path_to_vertex_shader, const std::string &path_to_fragment_shader);
         void build();
-        void draw();
+        void draw() const;
     };
 
 }

@@ -1,15 +1,19 @@
 #include "SGL/ShaderBuildSystem.hpp"
+#include "SGL/ShaderProgram.hpp"
 
 namespace sgl
 {
 	ShaderBuildSystem::ShaderBuildSystem(const std::string &vertex_shader_code, const std::string &fragment_shader_code)
-		: vertex_shader(Shader::Vertex, vertex_shader_code),
-		  fragment_shader(Shader::Fragment, fragment_shader_code)
-	{}
+	{
+		vertex_shader.load(vertex_shader_code, Shader::Vertex);
+		fragment_shader.load(fragment_shader_code, Shader::Fragment);
+	}
 	void ShaderBuildSystem::build()
 	{
-		vertex_shader.compile();
-		fragment_shader.compile();
+		if (!vertex_shader.compile())
+			return;
+		if (!fragment_shader.compile())
+			return;
 		attach(vertex_shader);
 		attach(fragment_shader);
 		link();
@@ -20,8 +24,9 @@ namespace sgl
 		bindBuffers();
 	}
 
-	void ShaderBuildSystem::draw()
+	void ShaderBuildSystem::draw() const
 	{
+        const_cast<ShaderProgram &>(static_cast<const ShaderProgram &>(*this)).render();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 

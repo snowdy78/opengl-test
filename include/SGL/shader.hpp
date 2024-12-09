@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SGLdecl.hpp"
-#include <cstring>
 #include <string>
 
 namespace sgl
@@ -15,22 +14,26 @@ namespace sgl
         };
     private:
         ShaderType type;
-        char *code;
+        char *code = nullptr;
         GLuint shader;
 
         GLuint &operator*();
         const GLuint &operator*() const;
 
         friend class ShaderProgram;
-    public:
+		bool loadFromFile(const std::string &path);
+
+	public:
+		Shader();
 		Shader(ShaderType type, const std::string &shader_code);
         ~Shader();
 
+		void load(const std::string &path, ShaderType type);
 
 		Shader(const Shader &)			  = delete;
 		Shader &operator=(const Shader &) = delete;
         ShaderType getType() const;
-        void compile();
+        bool compile();
         void remove();
     };
 }

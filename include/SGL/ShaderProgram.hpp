@@ -18,6 +18,7 @@ namespace sgl
 	private:
 		BufferType buffer_type = Static;
 		GLuint program		   = glCreateProgram();
+		bool need_render	   = false;
 		GLuint points_vbo	   = 0;
 		GLuint colors_vbo	   = 0;
 		GLuint vao			   = 0;
@@ -28,6 +29,7 @@ namespace sgl
 		ShaderProgram() {}
 		ShaderProgram(const ShaderProgram &)			= delete;
 		ShaderProgram &operator=(const ShaderProgram &) = delete;
+		~ShaderProgram();
 		void bindBuffers();
 		void attach(Shader &shader);
 		void render();
