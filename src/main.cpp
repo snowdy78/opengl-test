@@ -1,4 +1,5 @@
-#include <iostream>
+#include <vector>
+#include <string>
 #include "SGL/SGL.hpp"
 static std::string vertex_shader = R"(
 #version 460
@@ -36,18 +37,17 @@ int main()
         0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 1.0f,
     };
-    ShaderProgram shader_program;
     ShaderBuildSystem shader{vertex_shader, fragment_shader};
 
-    shader_program.setPoints(points.begin(), points.end());
-    shader_program.setPalette(colors.begin(), colors.end());
-    shader.build(shader_program);
-    
+    shader.setPoints(points.begin(), points.end());
+    shader.setPalette(colors.begin(), colors.end());
+    shader.build();
+
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     while (window.isOpen())
     {
         window.clear();
-        shader_program.use();
+        shader.render();
         shader.draw();
         window.display();
         glfwPollEvents();

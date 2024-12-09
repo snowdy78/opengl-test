@@ -1,35 +1,50 @@
-#include "SGL/shader.hpp"
+#include "SGL/Shader.hpp"
 
 namespace sgl
 {
-	ShaderBuildSystem::ShaderBuildSystem(const std::string &vertex_shader_code, const std::string &fragment_shader_code)
-		: vertex_shader(Shader::Vertex, vertex_shader_code),
-		  fragment_shader(Shader::Fragment, fragment_shader_code)
-	{}
-	void ShaderBuildSystem::build(ShaderProgram &program)
-	{
-		vertex_shader.compile();
-		fragment_shader.compile();
-		program.attach(vertex_shader);
-		program.attach(fragment_shader);
-		program.link();
 
-		vertex_shader.remove();
-		fragment_shader.remove();
-
-		program.bindBuffers();
-	}
-	ShaderBuildSystem::~ShaderBuildSystem()
+	Shader::Shader(ShaderType type, const std::string &shader_code)
+		: type(type)
 	{
-		delete program;
-	}
-
-	void ShaderBuildSystem::draw()
-	{
-		if (program)
+		code = (char *) malloc(shader_code.size() + 1);
+		code[shader_code.size()] = '\0';
+		for (int s = 0; s != strlen(code); ++s)
 		{
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+
+			code[s] = shader_code[s];
 		}
+
+		shader = glCreateShader(type == Vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
+
+		glShaderSource(shader, 1, &code, nullptr);
 	}
 
+	Shader::~Shader()
+	{
+		delete[] code;
+	}
+
+	GLuint &Shader::operator*()
+	{
+		return shader;
+	}
+
+	const GLuint &Shader::operator*() const
+	{
+		return shader;
+	}
+
+	Shader::ShaderType Shader::getType() const
+	{
+		return type;
+	}
+	void Shader::compile()
+	{
+		glCompileShader(shader);
+	}
+
+	void Shader::remove()
+	{
+		glDeleteShader(shader);
+	}
 } // namespace sgl
