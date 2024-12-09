@@ -64,17 +64,21 @@ namespace sgl
 
 	void Shader::remove()
 	{
-		glDeleteShader(shader);
+		if (code != nullptr)
+			glDeleteShader(shader);
 		delete[] code;
 		code = nullptr;
 	}
 	void Shader::load(const std::string &path, ShaderType type)
 	{
+		bool loaded = code;
 		if (!loadFromFile(path))
 		{
 			throw std::runtime_error("File not found in '" + path + "'");
 		}
 		this->type = type;
+		if (code)
+			glDeleteShader(shader);
 		shader = glCreateShader(type == Vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
 		glShaderSource(shader, 1, &code, nullptr);
 	}
@@ -92,11 +96,11 @@ namespace sgl
 			source_code += line + "\n";
 		}
 		file.close();
-		code = (char *) malloc(source_code.size() + 1);
+		code = new char[source_code.size() + 1];
 		code[source_code.size()] = '\0';
-		for (int s = 0; code[s] != '\0'; ++s)
+		for (int s = 0; s != source_code.size(); ++s)
 		{
-			this->code[s] = code[s];
+			code[s] = source_code[s];
 		}
 		return true;
 	}
