@@ -18,7 +18,7 @@ fetchcontent_makeavailable(GLFW)
 fetchcontent_declare(
   glm
   GIT_REPOSITORY https://github.com/g-truc/glm.git
-  GIT_TAG bf71a834948186f4097caa076cd2663c69a10e1e #refs/tags/1.0.1
+  GIT_TAG origin/master #refs/tags/1.0.1
 )
 
 fetchcontent_makeavailable(glm)
