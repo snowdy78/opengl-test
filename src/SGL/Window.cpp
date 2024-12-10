@@ -5,9 +5,9 @@
 namespace sgl
 {
 
-    Window::Window(int width, int height, const char* title)
+    Window::Window(const glm::ivec2 &size, const char* title)
     {
-        window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+        window = glfwCreateWindow(size.x, size.y, title, nullptr, nullptr);
         if (!window)
         {
             throw std::runtime_error("Failed to create Window");
@@ -18,6 +18,11 @@ namespace sgl
         {
             std::cout << "Cannot to load GLAD" << std::endl;
         }
+        glfwSetWindowUserPointer(window, this);
+        glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x, double y) {
+            Window *pw = (Window *) glfwGetWindowUserPointer(window);
+            pw->mouse_move_callback({ x, y });
+        });
     }
 
     Window::~Window()
@@ -35,6 +40,13 @@ namespace sgl
     void Window::display()
     {
         glfwSwapBuffers(window);
+    }
+    void Window::setMouseMoveCallback(const std::function<void(const glm::vec2 &)> &callback)
+    
+    {
+    
+    	mouse_move_callback = callback;
+    
     }
     bool Window::isOpen() const
     {
