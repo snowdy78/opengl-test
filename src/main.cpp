@@ -31,9 +31,11 @@ int main()
     shader.getVertex(0).position = points[0];
     shader.build();
     window.setMouseMoveCallback([&](const glm::vec2 &pos) {
-        glm::vec2 p{ pos.x/window.getSize().x * 2.0 - 1.0, -pos.y/window.getSize().y * 2.0 + 1.0};
+        auto x = pos.x/window.getSize().x * 2.0 - 1.0;
+        auto y = pos.y/window.getSize().y * 2.0 - 1.0;
+        glm::vec2 p{ x, -y };
         std::cout << points[0][0] << " " << points[0][1] << std::endl;
-        shader.getVertex(0).position = {p, 0};
+        shader.getVertex(0).position = {p, 0.0};
         shader.build();
     });
 

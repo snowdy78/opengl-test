@@ -13,10 +13,7 @@ namespace sgl
 	ShaderData::ShaderData(Type type, const std::string &shader_code)
 		: type(type)
 	{
-		const char *code = shader_code.c_str();
-		shader = glCreateShader(type == Vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
-		glShaderSource(shader, 1, &code, nullptr);
-		is_created = true;
+		create(shader_code);
 	}
 
 	ShaderData::~ShaderData()
@@ -63,18 +60,13 @@ namespace sgl
 	}
 	bool ShaderData::load(const std::string &path, Type type)
 	{
-		bool loaded = is_created;
 		std::string source_code = loadFromFile(path);
 		if (source_code.empty())
 		{
 			return false;
 		}
-		const char *code = source_code.c_str();
 		this->type = type;
-		remove();
-		shader = glCreateShader(type == Vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
-		glShaderSource(shader, 1, &code, nullptr);
-		is_created = true;
+		create(source_code);
 		return true;
 	}
 	std::string ShaderData::loadFromFile(const std::string &path)
@@ -82,7 +74,7 @@ namespace sgl
 		std::ifstream file(path);
 		if (!file.is_open())
 		{
-			return "";
+			throw std::runtime_error("File not found '" + path + "'");
 		}
 		std::string source_code;
 		std::string line;
@@ -92,5 +84,14 @@ namespace sgl
 		}
 		file.close();
 		return source_code;
+	}
+	void ShaderData::create(const std::string &source_code) 
+	{
+		if (is_created)
+			glDeleteShader(shader);
+		shader = glCreateShader(retype[type]);
+		const char *code = source_code.c_str();
+		glShaderSource(shader, 1, &code, nullptr);
+		is_created = true;
 	}
 } // namespace sgl
