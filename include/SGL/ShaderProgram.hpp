@@ -11,33 +11,29 @@ namespace sgl
 {
 	class ShaderProgram
 	{
-		enum BufferType
-		{
-			Static,
-			Dynamic
-		};
-
 	private:
-		BufferType buffer_type = Static;
-		GLuint program		   = glCreateProgram();
-		bool need_render	   = false;
-		GLuint points_vbo	   = 0;
-		GLuint colors_vbo	   = 0;
-		GLuint vao			   = 0;
-		VertexArray vertices;
+		GLuint program	 = glCreateProgram();
+		bool need_render = false;
+		std::vector<ShaderData *> shaders;
+
+	protected:
+		VertexArray vertices{};
 
 	public:
-		ShaderProgram() {}
+		ShaderProgram();
 		ShaderProgram(const ShaderProgram &)			= delete;
 		ShaderProgram &operator=(const ShaderProgram &) = delete;
 		~ShaderProgram();
 		void bindBuffers();
 		void attach(ShaderData &shader);
+		void detach(ShaderData &shader);
 		void render();
 		void link();
-		void setVertexCount(size_t count);
-		Vertex &getVertex(size_t i);
 		const Vertex &getVertex(size_t i) const;
+		size_t getVertexCount() const;
+		ShaderData &shader(size_t index);
+		const ShaderData &shader(size_t index) const;
+		size_t getShaderCount() const;
 	};
 
 } // namespace sgl

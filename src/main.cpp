@@ -22,20 +22,17 @@ int main()
     shader.setVertexCount(3);
     for (size_t i = 0; i < points.length(); i++)
     {
-        shader.getVertex(i).position = points[i];
+        shader.setVertex(0, {points[i], colors[i]});
     }
-    for (size_t i = 0; i < points.length(); i++)
-    {
-        shader.getVertex(i).color = colors[i];
-    }
-    shader.getVertex(0).position = points[0];
     shader.build();
     window.setMouseMoveCallback([&](const glm::vec2 &pos) {
         auto x = pos.x/window.getSize().x * 2.0 - 1.0;
         auto y = pos.y/window.getSize().y * 2.0 - 1.0;
         glm::vec2 p{ x, -y };
         std::cout << points[0][0] << " " << points[0][1] << std::endl;
-        shader.getVertex(0).position = {p, 0.0};
+        Vertex v(shader.getVertex(0));
+        v.position = {p, 0};
+        shader.setVertex(0, v);
         shader.build();
     });
 
