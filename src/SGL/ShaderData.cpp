@@ -13,21 +13,14 @@ namespace sgl
 	ShaderData::ShaderData(Type type, const std::string &shader_code)
 		: type(type)
 	{
-		code = (char *) malloc(shader_code.size() + 1);
-		code[shader_code.size()] = '\0';
-		for (int s = 0; code[s] != '\0'; ++s)
-		{
-			code[s] = shader_code[s];
-		}
-
+		const char *code = shader_code.c_str();
 		shader = glCreateShader(type == Vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
-
 		glShaderSource(shader, 1, &code, nullptr);
+		is_created = true;
 	}
 
 	ShaderData::~ShaderData()
 	{
-		delete[] code;
 	}
 
 	GLuint &ShaderData::operator*()
@@ -46,7 +39,7 @@ namespace sgl
 	}
 	bool ShaderData::compile()
 	{
-		if (code == nullptr)
+		if (!is_created)
 			throw std::runtime_error("Shader is not created");
 		glCompileShader(shader);
 
@@ -65,30 +58,31 @@ namespace sgl
 
 	void ShaderData::remove()
 	{
-		if (code != nullptr)
+		if (is_created)
 			glDeleteShader(shader);
-		delete[] code;
-		code = nullptr;
 	}
-	void ShaderData::load(const std::string &path, Type type)
+	bool ShaderData::load(const std::string &path, Type type)
 	{
-		bool loaded = code;
-		if (!loadFromFile(path))
+		bool loaded = is_created;
+		std::string source_code = loadFromFile(path);
+		if (source_code.empty())
 		{
-			throw std::runtime_error("File not found in '" + path + "'");
+			return false;
 		}
+		const char *code = source_code.c_str();
 		this->type = type;
-		if (code)
-			glDeleteShader(shader);
+		remove();
 		shader = glCreateShader(type == Vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
 		glShaderSource(shader, 1, &code, nullptr);
+		is_created = true;
+		return true;
 	}
-	bool ShaderData::loadFromFile(const std::string &path)
+	std::string ShaderData::loadFromFile(const std::string &path)
 	{
 		std::ifstream file(path);
 		if (!file.is_open())
 		{
-			return false;
+			return "";
 		}
 		std::string source_code;
 		std::string line;
@@ -97,12 +91,6 @@ namespace sgl
 			source_code += line + "\n";
 		}
 		file.close();
-		code = new char[source_code.size() + 1];
-		code[source_code.size()] = '\0';
-		for (int s = 0; s != source_code.size(); ++s)
-		{
-			code[s] = source_code[s];
-		}
-		return true;
+		return source_code;
 	}
 } // namespace sgl

@@ -10,25 +10,29 @@ namespace sgl
         enum Type
         {
             Vertex,
-            Fragment
+            Fragment,
+            Geometry,
+            TessEvaluation,
+            TessControl,
+            Compute
         };
     private:
         Type type;
-        char *code = nullptr;
+        bool is_created = false;
         GLuint shader;
 
         GLuint &operator*();
         const GLuint &operator*() const;
 
         friend class ShaderProgram;
-		bool loadFromFile(const std::string &path);
+		std::string loadFromFile(const std::string &path);
 
 	public:
 		ShaderData();
 		ShaderData(Type type, const std::string &shader_code);
         ~ShaderData();
 
-		void load(const std::string &path, Type type);
+		bool load(const std::string &path, Type type);
 
 		ShaderData(const ShaderData &)			  = delete;
 		ShaderData &operator=(const ShaderData &) = delete;
