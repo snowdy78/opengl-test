@@ -14,6 +14,6 @@ namespace sgl
     class Drawable;
     class Transform;
     class Component;
-
+    using Point = glm::vec3;
     void init();
 }

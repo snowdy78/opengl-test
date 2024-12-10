@@ -4,6 +4,8 @@
 #include "SGLdecl.hpp"
 
 #include "ShaderData.hpp"
+#include "VertexArray.hpp"
+
 
 namespace sgl
 {
@@ -22,8 +24,7 @@ namespace sgl
 		GLuint points_vbo	   = 0;
 		GLuint colors_vbo	   = 0;
 		GLuint vao			   = 0;
-		glm::mat3 point_mat3;
-		glm::mat3 color_mat3;
+		VertexArray vertices;
 
 	public:
 		ShaderProgram() {}
@@ -34,8 +35,9 @@ namespace sgl
 		void attach(ShaderData &shader);
 		void render();
 		void link();
-		void setPoints(const glm::mat3 &mat3);
-		void setPalette(const glm::mat3 &mat3);
+		void setVertexCount(size_t count);
+		Vertex &getVertex(size_t i);
+		const Vertex &getVertex(size_t i) const;
 	};
 
 } // namespace sgl

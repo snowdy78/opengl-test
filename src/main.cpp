@@ -12,21 +12,28 @@ int main()
         0.5f, -0.5f, 0.0f,
         -0.5f, -0.5f, 0.0f
 	);
-    glm::mat3 colors {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f,
+    Palette colors {
+        {1.0f, 0.0f, 0.0f},
+        {0.0f, 1.0f, 0.0f},
+        {0.0f, 0.0f, 1.0f},
     };
     Shader shader{"triangle.vert", "triangle.frag"};
 
-    shader.setPoints(points);
-    shader.setPalette(colors);
+    shader.setVertexCount(3);
+    for (size_t i = 0; i < points.length(); i++)
+    {
+        shader.getVertex(i).position = points[i];
+    }
+    for (size_t i = 0; i < points.length(); i++)
+    {
+        shader.getVertex(i).color = colors[i];
+    }
+    shader.getVertex(0).position = points[0];
     shader.build();
     window.setMouseMoveCallback([&](const glm::vec2 &pos) {
-        points[0][0] = pos.x/window.getSize().x * 2.0 - 1.0;
-        points[0][1] = -pos.y/window.getSize().y * 2.0 + 1.0;
+        glm::vec2 p{ pos.x/window.getSize().x * 2.0 - 1.0, -pos.y/window.getSize().y * 2.0 + 1.0};
         std::cout << points[0][0] << " " << points[0][1] << std::endl;
-        shader.setPoints(points);
+        shader.getVertex(0).position = {p, 0};
         shader.build();
     });
 
