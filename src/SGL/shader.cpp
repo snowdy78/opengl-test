@@ -17,9 +17,6 @@ namespace sgl
 		attach(fragment_shader);
 		link();
 
-		vertex_shader.remove();
-		fragment_shader.remove();
-
 		bindBuffers();
 	}
 
