@@ -1,3 +1,5 @@
+#pragma once
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -15,5 +17,6 @@ namespace sgl
     class Transform;
     class Component;
     using Point = glm::vec3;
-    void init();
+    int init();
+    inline static int initializer = init();
 }

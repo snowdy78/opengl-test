@@ -5,32 +5,31 @@
 #include "SGL/SGLdecl.hpp"
 #include "Vertex.hpp"
 #include "Palette.hpp"
-
+#include <iostream>
 namespace sgl
 {
 	class VertexArray : public std::vector<Vertex>
 	{
-
 	public:
         using std::vector<Vertex>::vector;
 
         Palette getPalette() const
         {
-            Palette palette(size());
+            Palette palette;
             for (auto &vertex : *this)
             {
-                palette[0] = vertex.color;
+                palette.push_back(vertex.color);
             }
             return std::move(palette);
         }
         PointArray getPointArray() const
         {
-            PointArray point_array(size());
+            PointArray points;
             for (auto &vertex : *this)
             {
-                point_array.push_back(vertex.position);
+                points.push_back(vertex.position);
             }
-            return std::move(point_array);
+            return std::move(points);
         }
 	};
 

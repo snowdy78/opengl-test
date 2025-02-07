@@ -1,16 +1,17 @@
-#include <iostream>
 #include "SGL/SGLdecl.hpp"
 
 
 
 namespace sgl
 {
-    void init()
+    int init()
     {
         if (!glfwInit())
         {
             exit(EXIT_FAILURE);
+            return 0;
         }
+        return 1;
     }
 }
 

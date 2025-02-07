@@ -1,9 +1,9 @@
 #version 440
 
-in vec3 inColor;
-out vec4 outColor;
+in vec4 color;
+out vec4 frag_color;
 
 void main()
 {
-    outColor = vec4(inColor, 1.0);
+    frag_color = color * length(color);
 }

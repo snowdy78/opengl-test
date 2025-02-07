@@ -10,33 +10,33 @@ namespace sgl
 {
 	ShaderData::ShaderData() {}
 
-	ShaderData::ShaderData(Type type, const std::string &shader_code)
+	ShaderData::ShaderData(Type type, const std::string &code_str)
 		: type(type)
 	{
-		create(shader_code);
+		create(type, code_str);
 	}
-
-	ShaderData::~ShaderData()
-	{
-	}
-
+	ShaderData::~ShaderData() {}
 	ShaderData::Type ShaderData::getType() const
 	{
 		return type;
 	}
+	GLuint ShaderData::getDescriptor() const
+	{
+		return shader;
+	}
 	bool ShaderData::compile()
 	{
-		if (!is_created)
+		if (!exist())
 			throw std::runtime_error("Shader is not created");
-		glCompileShader(id);
+		glCompileShader(shader);
 
 		GLint compile_status = 0;
-		glGetShaderiv(id, GL_COMPILE_STATUS, &compile_status);
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_status);
 		if (compile_status == GL_FALSE)
 		{
 			size_t size = 1024;
 			GLchar infoLog[size];
-			glGetShaderInfoLog(id, size, nullptr, infoLog);
+			glGetShaderInfoLog(shader, size, nullptr, infoLog);
 			std::cerr << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
 			return false;
 		}
@@ -45,8 +45,8 @@ namespace sgl
 
 	void ShaderData::remove()
 	{
-		if (is_created)
-			glDeleteShader(id);
+		if (exist())
+			glDeleteShader(shader);
 	}
 	bool ShaderData::load(const std::string &path, Type type)
 	{
@@ -56,8 +56,28 @@ namespace sgl
 			return false;
 		}
 		this->type = type;
-		create(source_code);
+		create(this->type, source_code);
 		return true;
+	}
+	ShaderData::ShaderData(ShaderData &&other) 
+	{
+	    shader = other.shader;
+	    other.shader = 0;
+	    type = other.type;
+	    other.type = Unknown;
+	    buffer_type = other.buffer_type;
+	}
+	bool ShaderData::exist() const 
+	{
+		return shader != 0;
+	}
+	ShaderData::BufferAllocationType ShaderData::getBufferAllocType() const 
+	{    
+		return buffer_type;
+	}
+	void ShaderData::setBufferAllocType(BufferAllocationType type) 
+	{
+		buffer_type = type;
 	}
 	std::string ShaderData::loadFromFile(const std::string &path)
 	{
@@ -75,52 +95,42 @@ namespace sgl
 		file.close();
 		return source_code;
 	}
-	void ShaderData::create(const std::string &source_code) 
+	void ShaderData::create(Type type, const std::string &source_code) 
 	{
-		if (is_created)
-			glDeleteShader(id);
-		id = glCreateShader(type);
-		const char *code = source_code.c_str();
-		glShaderSource(id, 1, &code, nullptr);
-		is_created = true;
-	}
-	GLuint ShaderData::getGLId() const
-	{
-		return id;
+		if (type == Unknown) 
+			throw std::runtime_error("Unknown shader type");
+		if (shader != 0)
+			glDeleteShader(shader);
+		shader = glCreateShader(toShaderType(type));
+		auto sc = source_code.c_str();
+		glShaderSource(shader, 1, &sc, nullptr);
 	}
 
-	void ShaderData::addLayout(size_t index, ShaderLayout::reference value)
+	GLenum ShaderData::toShaderType(Type type) 
 	{
-		auto it = layouts.begin();
-		std::advance(it, index);
-		if (it == layouts.end())
-			throw std::out_of_range("Index out of range");
-		layouts.insert(it, {&value});
+		if (type == Vertex)
+			return GL_VERTEX_SHADER;
+		if (type == Fragment)
+			return GL_FRAGMENT_SHADER;
+		if (type == Geometry)
+			return GL_GEOMETRY_SHADER;
+		if (type == TessEvaluation)
+			return GL_TESS_EVALUATION_SHADER;
+		if (type == TessControl)
+			return GL_TESS_CONTROL_SHADER;
+		if (type == Compute)
+			return GL_COMPUTE_SHADER;
+		return -1;
 	}
-	void ShaderData::setLayoutValue(size_t layout_id, size_t value_id, const void *layout)
+
+	GLenum ShaderData::toBufferAllocationType(BufferAllocationType type) 
 	{
-		*layouts[layout_id][value_id] = layout;
-	}
-	const ShaderData::ShaderLayout &ShaderData::layout(size_t index) const
-	{
-		return layouts[index];
-	}
-	void ShaderData::removeLayout(size_t index)
-	{
-		auto it = layouts.begin();
-		std::advance(it, index);
-		layouts.erase(it);
-	}
-	size_t ShaderData::getLayoutCount() const
-	{
-		return layouts.size();
-	}
-	void ShaderData::insertIntoLayout(size_t index, ShaderLayout::reference layout_value)
-	{
-		layouts[index].push_back(&layout_value);
-	}
-	void ShaderData::setLayoutCount(size_t count)
-	{
-		layouts.resize(count);
+		if (type == Static)
+			return GL_STATIC_DRAW;
+		if (type == Dynamic)
+			return GL_DYNAMIC_DRAW;
+		if (type == Stream)
+			return GL_STREAM_DRAW;
+		return -1;
 	}
 } // namespace sgl

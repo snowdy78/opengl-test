@@ -1,7 +1,7 @@
 #include "SGL/Window.hpp"
 #include <stdexcept>
 #include <iostream>
-
+#include "SGL/Drawable.hpp"
 namespace sgl
 {
 
@@ -24,29 +24,26 @@ namespace sgl
             pw->mouse_move_callback({ x, y });
         });
     }
-
     Window::~Window()
     {
         glfwDestroyWindow(window);
     }
-
     void Window::clear(const Color &color)
     {
         glClearColor(color.r, color.g, color.b, color.a);
         glClear(GL_COLOR_BUFFER_BIT);
     }
-
-
-    void Window::display()
+    void Window::draw(const Drawable &drawable) const
+    {
+        drawable.draw();
+    }
+    void Window::update() const
     {
         glfwSwapBuffers(window);
     }
     void Window::setMouseMoveCallback(const std::function<void(const glm::vec2 &)> &callback)
-    
     {
-    
     	mouse_move_callback = callback;
-    
     }
     bool Window::isOpen() const
     {

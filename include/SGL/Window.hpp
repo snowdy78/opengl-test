@@ -30,7 +30,8 @@ namespace sgl
 		}
 		bool isOpen() const;
 		void clear(const Color &color = Color::black);
-		void display();
+		void draw(const Drawable &drawable) const;
+		void update() const;
 
 		void setMouseMoveCallback(const std::function<void(const glm::vec2 &)> &callback);
 	};

@@ -9,31 +9,52 @@
 
 namespace sgl
 {
-	class ShaderProgram
+	class ShaderProgram : public std::vector<ShaderData>
 	{
+	public:
+		enum PrimitiveType 
+		{
+			Triangles,
+			TriangleStrip,
+			TriangleFan,
+			Points,
+			Lines,
+			LineStrip,
+			LineLoop,
+			Quads,
+			Unknown,
+		};
 	private:
-		GLuint program	 = glCreateProgram();
-		bool need_render = false;
-		std::vector<ShaderData *> shaders;
-
-	protected:
-		VertexArray vertices{};
+		// vertices use two descriptors: [0] point, [1] color
+		GLuint vbos[2] = {0, 0};
+		GLuint vertex_array = 0;
+		GLuint program		   = glCreateProgram();
+		VertexArray vertices;
+		PrimitiveType draw_algorithm = TriangleFan;
+		static GLenum toDrawAlgorithm(PrimitiveType draw_algorithm);
 
 	public:
-		ShaderProgram();
+		ShaderProgram() {}
 		ShaderProgram(const ShaderProgram &)			= delete;
 		ShaderProgram &operator=(const ShaderProgram &) = delete;
 		~ShaderProgram();
 		void bindBuffers();
-		void attach(ShaderData &shader);
-		void detach(ShaderData &shader);
-		void render();
-		void link();
+		void build();
+		void attach() const;
+		void render() const;
+		void link() const;
+		void setVertexCount(size_t count);
+		PrimitiveType getPrimitiveType() const;
+		void setPrimitiveType(PrimitiveType);
+		template<class Iter>
+		void assignVertices(Iter begin, const Iter &end);
+		Vertex &getVertex(size_t i);
 		const Vertex &getVertex(size_t i) const;
-		size_t getVertexCount() const;
-		ShaderData &shader(size_t index);
-		const ShaderData &shader(size_t index) const;
-		size_t getShaderCount() const;
 	};
 
+	template<class Iter>
+	void ShaderProgram::assignVertices(Iter begin, const Iter &end)
+	{
+		vertices.assign(begin, end);
+	}
 } // namespace sgl
