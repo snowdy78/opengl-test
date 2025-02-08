@@ -9,12 +9,12 @@ namespace sgl
     {
         enum Type
         {
-            Vertex, // DONT MAKE IT and etc. EQUAL TO GL_VERTEX_SHADER
-            Fragment,
-            Geometry,
-            TessEvaluation,
-            TessControl,
-            Compute,
+            Vertex = GL_VERTEX_SHADER,
+            Fragment = GL_FRAGMENT_SHADER,
+            Geometry = GL_GEOMETRY_SHADER,
+            TessEvaluation = GL_TESS_EVALUATION_SHADER,
+            TessControl = GL_TESS_CONTROL_SHADER,
+            Compute = GL_COMPUTE_SHADER,
             Unknown = -1
         };
         enum BufferAllocationType
@@ -31,10 +31,8 @@ namespace sgl
         friend class ShaderProgram;
 		std::string loadFromFile(const std::string &path);
 		void create(Type type, const std::string &source_code);
-        static GLenum toShaderType(Type type);
-        static GLenum toBufferAllocationType(BufferAllocationType type);
         
-        public:
+    public:
 		ShaderData();
 		ShaderData(Type type, const std::string &code_str);
         ~ShaderData();
