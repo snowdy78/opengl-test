@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <GL/gl.h>
-
+// Welcome to SGL [Simple Graphics Library]
 namespace sgl
 {
     class Window;
@@ -17,6 +17,14 @@ namespace sgl
     class Transform;
     class Component;
     using Point = glm::vec3;
-    int init();
-    inline static int initializer = init();
+    class GLFWINIT 
+    {
+    public:
+        ~GLFWINIT() 
+        {
+            glfwTerminate();
+        }
+    };
+    GLFWINIT init();
+    inline static GLFWINIT initializer = init();
 }

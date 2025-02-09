@@ -1,53 +1,32 @@
 #include <string>
-#include "SGL/PointArray.hpp"
 #include "SGL/SGL.hpp"
-#include "SGL/SGLdecl.hpp"
-#include "SGL/ShaderProgram.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
 using namespace sgl;
 int main()
 {
-    GLFWwindow* window;
     auto vertices = VertexArray{
         {{0.0f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-        {{0.0f, -1.0f, 0.0f}, {0.0f, 1.0f, 1.0f}},
-        {{0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+        {{0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
         {{0.0f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
     };
-    window = glfwCreateWindow(800, 600, "My Window", nullptr, nullptr);
-    if (!window)
-    {
-        exit(EXIT_FAILURE);
-    }
-    glfwMakeContextCurrent(window);
-    if (!gladLoadGL())
-    {
-        std::cout << "Cannot to load GLAD" << std::endl;
-    }
+    Window window({800, 600}, "Triangle");    
+    Shader shader{"triangle.vert", "triangle.frag"};
+    Shader shader2{"triangle.vert", "triangle.frag"};
+    shader2.assignVertices(vertices.begin(), vertices.end());
+    shader.assignVertices(vertices.begin(), vertices.end());
     
-    ShaderData vsx;
-    ShaderData fsx;
-    if (!vsx.load("triangle.vert", ShaderData::Vertex) || !fsx.load("triangle.frag", ShaderData::Fragment))
+    // TODO rework transform
+    shader.transform.translate({0.0, 0.5, 0.0});
+    shader.transform.rotate(3.14/4, {0, 0, 1});
+    while (window.isOpen())
     {
-        std::cout << "Failed to load shaders" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    vsx.compile();
-    fsx.compile();
-    ShaderProgram program;
-    program.emplace_back(std::move(vsx));
-    program.emplace_back(std::move(fsx));
-    program.assignVertices(vertices.begin(), vertices.end());
-    program.setPrimitiveType(ShaderProgram::PrimitiveType::TriangleFan);
-    program.build();
-    while (!glfwWindowShouldClose(window))
-    {
-        program.render();
-        glfwSwapBuffers(window);
+        window.clear({0.1, 0.2, 0.3, 1.0});
+        window.draw(shader);
+        window.draw(shader2);
+        window.update();
         glfwPollEvents();
     }
-    glfwTerminate();
     return 0;
 }

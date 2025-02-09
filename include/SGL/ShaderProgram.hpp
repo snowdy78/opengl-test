@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "SGL/Transform.hpp"
 #include "SGLdecl.hpp"
 
 #include "ShaderData.hpp"
@@ -14,47 +15,55 @@ namespace sgl
 	public:
 		enum PrimitiveType 
 		{
-			Triangles,
-			TriangleStrip,
-			TriangleFan,
-			Points,
-			Lines,
-			LineStrip,
-			LineLoop,
-			Quads,
-			Unknown,
+			Triangles = GL_TRIANGLES,
+			TriangleStrip = GL_TRIANGLE_STRIP,
+			TriangleFan = GL_TRIANGLE_FAN,
+			Points = GL_POINTS,
+			Lines = GL_LINES,
+			LineStrip = GL_LINE_STRIP,
+			LineLoop = GL_LINE_LOOP,
+			LineStripAdjacency = GL_LINE_STRIP_ADJACENCY,
+			LinesAdjacency = GL_LINES_ADJACENCY,
+			TriangleStripAdjacency = GL_TRIANGLE_STRIP_ADJACENCY,
+			TrianglesAdjacency = GL_TRIANGLES_ADJACENCY,
+			Patches = GL_PATCHES,
+			Unknown = -1,
 		};
 	private:
 		// vertices use two descriptors: [0] point, [1] color
-		GLuint vbos[2] = {0, 0};
-		GLuint vertex_array = 0;
-		GLuint program		   = glCreateProgram();
+		mutable std::vector<GLuint> vertex_buffers;
+		mutable GLuint vertex_array = 0;
+		mutable GLuint program		   = glCreateProgram();
 		VertexArray vertices;
 		PrimitiveType draw_algorithm = TriangleFan;
-		static GLenum toDrawAlgorithm(PrimitiveType draw_algorithm);
+		mutable bool need_build = true;
+		void makeBuild() const;
 
 	public:
-		ShaderProgram() {}
+		mutable Transform transform;
+		ShaderProgram() : vertex_buffers(2, {}) {}
 		ShaderProgram(const ShaderProgram &)			= delete;
 		ShaderProgram &operator=(const ShaderProgram &) = delete;
 		~ShaderProgram();
-		void bindBuffers();
-		void build();
+		void bindBuffers() const;
+		void build() const;
 		void attach() const;
 		void render() const;
 		void link() const;
 		void setVertexCount(size_t count);
+		size_t getVertexCount() const;
 		PrimitiveType getPrimitiveType() const;
 		void setPrimitiveType(PrimitiveType);
 		template<class Iter>
 		void assignVertices(Iter begin, const Iter &end);
-		Vertex &getVertex(size_t i);
 		const Vertex &getVertex(size_t i) const;
+		void setVertex(size_t i, const Vertex &v);
 	};
 
 	template<class Iter>
 	void ShaderProgram::assignVertices(Iter begin, const Iter &end)
 	{
 		vertices.assign(begin, end);
+		build();
 	}
 } // namespace sgl

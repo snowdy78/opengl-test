@@ -24,7 +24,7 @@ namespace sgl
 	{
 		return shader;
 	}
-	bool ShaderData::compile()
+	bool ShaderData::compile() const
 	{
 		if (!exist())
 			throw std::runtime_error("Shader is not created");

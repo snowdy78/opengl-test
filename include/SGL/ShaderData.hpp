@@ -45,7 +45,7 @@ namespace sgl
         BufferAllocationType getBufferAllocType() const;
         void setBufferAllocType(BufferAllocationType type);
         Type getType() const;
-        bool compile();
+        bool compile() const;
         void remove();
     };
 }

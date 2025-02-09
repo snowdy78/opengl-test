@@ -1,17 +1,15 @@
+#include <stdexcept>
 #include "SGL/SGLdecl.hpp"
-
-
 
 namespace sgl
 {
-    int init()
+    GLFWINIT init()
     {
         if (!glfwInit())
         {
-            exit(EXIT_FAILURE);
-            return 0;
+            throw std::runtime_error("Failed to initialize GLFW");
         }
-        return 1;
+        return GLFWINIT();
     }
 }
 

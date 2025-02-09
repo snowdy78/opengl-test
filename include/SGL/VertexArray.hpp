@@ -2,10 +2,9 @@
 
 #include <vector>
 #include "PointArray.hpp"
-#include "SGL/SGLdecl.hpp"
 #include "Vertex.hpp"
 #include "Palette.hpp"
-#include <iostream>
+
 namespace sgl
 {
 	class VertexArray : public std::vector<Vertex>

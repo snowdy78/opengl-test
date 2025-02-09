@@ -9,18 +9,12 @@ namespace sgl
 {
 	class Component : public Drawable
 	{
-    protected:
-		Transform transform;
-
 	public:
 		Component()
 		{
-		    transform.bind(this);
 		}
         virtual void onTransformUpdate() {}
-        virtual void onTranslate() {}
-        virtual void onScale() {}
-        virtual void onRotate() {}
-        virtual ~Component() = default;
+        virtual ~Component() = 0;
 	};
+	inline Component::~Component() = default;
 } // namespace sgl
