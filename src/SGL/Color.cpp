@@ -1,4 +1,5 @@
 #include "SGL/Color.hpp"
+#include <glm/vec3.hpp>
 
 namespace sgl
 {

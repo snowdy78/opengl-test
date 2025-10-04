@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include "SGL/Drawable.hpp"
+
 namespace sgl
 {
 
@@ -50,4 +51,10 @@ namespace sgl
 		return !glfwWindowShouldClose(window);
 	}
 
+	glm::ivec2 Window::getSize() const
+	{
+		glm::ivec2 size;
+		glfwGetWindowSize(window, &size.x, &size.y);
+		return size;
+	}
 } // namespace sgl

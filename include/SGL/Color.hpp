@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SGL/SGLdecl.hpp"
-
+#include <glm/vec4.hpp>
 namespace sgl
 {
 	struct Color : glm::vec4

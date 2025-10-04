@@ -2,7 +2,8 @@
 
 #include <functional>
 #include "Color.hpp"
-#include "SGL/SGLdecl.hpp"
+#include "glm/fwd.hpp"
+#include "SGL/Math/Area.hpp"
 
 
 namespace sgl
@@ -22,12 +23,7 @@ namespace sgl
 		};
 		Window(const glm::ivec2 &size, const char *title);
 		~Window();
-		glm::ivec2 getSize() const
-		{
-			glm::ivec2 size;
-			glfwGetWindowSize(window, &size.x, &size.y);
-			return size;
-		}
+		glm::ivec2 getSize() const;
 		bool isOpen() const;
 		void clear(const Color &color = Color::black);
 		void draw(const Drawable &drawable) const;

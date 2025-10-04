@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 #include <GL/gl.h>
 // Welcome to SGL [Simple Graphics Library]
 namespace sgl
@@ -16,6 +16,7 @@ namespace sgl
 	class Drawable;
 	class Transform;
 	class Component;
+	class Area;
 	using Point = glm::vec3;
 	class GLFWINIT
 	{

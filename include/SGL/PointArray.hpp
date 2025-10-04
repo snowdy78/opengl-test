@@ -2,6 +2,7 @@
 
 #include "SGL/SGLdecl.hpp"
 #include <vector>
+#include <glm/vec3.hpp>
 
 namespace sgl
 {
