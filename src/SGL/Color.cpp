@@ -23,9 +23,9 @@ namespace sgl
 		: glm::vec4(r, g, b, 1.)
 	{}
 
-	glm::vec3 Color::simplify() const 
+	glm::vec3 Color::simplify() const
 	{
-		return {r, g, b};
+		return { r, g, b };
 	}
 
 } // namespace sgl

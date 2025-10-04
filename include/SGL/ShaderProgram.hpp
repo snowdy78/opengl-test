@@ -13,35 +13,38 @@ namespace sgl
 	class ShaderProgram : public std::vector<ShaderData>
 	{
 	public:
-		enum PrimitiveType 
+		enum PrimitiveType
 		{
-			Triangles = GL_TRIANGLES,
-			TriangleStrip = GL_TRIANGLE_STRIP,
-			TriangleFan = GL_TRIANGLE_FAN,
-			Points = GL_POINTS,
-			Lines = GL_LINES,
-			LineStrip = GL_LINE_STRIP,
-			LineLoop = GL_LINE_LOOP,
-			LineStripAdjacency = GL_LINE_STRIP_ADJACENCY,
-			LinesAdjacency = GL_LINES_ADJACENCY,
+			Triangles			   = GL_TRIANGLES,
+			TriangleStrip		   = GL_TRIANGLE_STRIP,
+			TriangleFan			   = GL_TRIANGLE_FAN,
+			Points				   = GL_POINTS,
+			Lines				   = GL_LINES,
+			LineStrip			   = GL_LINE_STRIP,
+			LineLoop			   = GL_LINE_LOOP,
+			LineStripAdjacency	   = GL_LINE_STRIP_ADJACENCY,
+			LinesAdjacency		   = GL_LINES_ADJACENCY,
 			TriangleStripAdjacency = GL_TRIANGLE_STRIP_ADJACENCY,
-			TrianglesAdjacency = GL_TRIANGLES_ADJACENCY,
-			Patches = GL_PATCHES,
-			Unknown = -1,
+			TrianglesAdjacency	   = GL_TRIANGLES_ADJACENCY,
+			Patches				   = GL_PATCHES,
+			Unknown				   = -1,
 		};
+
 	private:
 		// vertices use two descriptors: [0] point, [1] color
 		mutable std::vector<GLuint> vertex_buffers;
 		mutable GLuint vertex_array = 0;
-		mutable GLuint program		   = glCreateProgram();
+		mutable GLuint program		= glCreateProgram();
 		VertexArray vertices;
 		PrimitiveType draw_algorithm = TriangleFan;
-		mutable bool need_build = true;
+		mutable bool need_build		 = true;
 		void makeBuild() const;
 
 	public:
 		mutable Transform transform;
-		ShaderProgram() : vertex_buffers(2, {}) {}
+		ShaderProgram()
+			: vertex_buffers(2, {})
+		{}
 		ShaderProgram(const ShaderProgram &)			= delete;
 		ShaderProgram &operator=(const ShaderProgram &) = delete;
 		~ShaderProgram();

@@ -17,13 +17,13 @@ namespace sgl
 
 	void Shader::draw() const
 	{
-        program.render();
+		program.render();
 	}
 	void Shader::setVertex(size_t i, const Vertex &vertex)
 	{
 		program.setVertex(i, vertex);
 	}
-	void Shader::onTransformUpdate() 
+	void Shader::onTransformUpdate()
 	{
 		program.build();
 	}

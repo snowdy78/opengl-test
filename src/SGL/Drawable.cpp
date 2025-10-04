@@ -2,6 +2,5 @@
 
 namespace sgl
 {
-    Drawable::~Drawable() {}
-}
-
+	Drawable::~Drawable() {}
+} // namespace sgl

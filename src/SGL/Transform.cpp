@@ -8,12 +8,12 @@ namespace sgl
 
 	void Transform::update()
 	{
-		if (need_update) 
+		if (need_update)
 		{
-			_transform = initMatrix();
-			_transform = glm::translate(_transform, pos);
-			_transform = glm::scale(_transform, scale_factor);
-			_transform = glm::rotate(_transform, rotation, glm::vec3{rotation_axis.xyz});
+			_transform	= initMatrix();
+			_transform	= glm::translate(_transform, pos);
+			_transform	= glm::scale(_transform, scale_factor);
+			_transform	= glm::rotate(_transform, rotation, glm::vec3{ rotation_axis.xyz });
 			need_update = false;
 			if (_component != nullptr)
 				_component->onTransformUpdate();
@@ -25,9 +25,9 @@ namespace sgl
 		return need_update;
 	}
 
-	glm::mat4 Transform::initMatrix() 
+	glm::mat4 Transform::initMatrix()
 	{
-		return { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };	
+		return { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	}
 
 	Transform::Transform()
@@ -45,19 +45,19 @@ namespace sgl
 
 	void Transform::translate(const glm::vec3 &vec)
 	{
-		pos = vec;
+		pos			= vec;
 		need_update = true;
 	}
 
 	void Transform::scale(const glm::vec3 &vec)
 	{
 		scale_factor = vec;
-		need_update = true;
+		need_update	 = true;
 	}
 
 	void Transform::rotate(float angle, const RotationAxis &axis)
 	{
-		rotation = angle;
+		rotation	= angle;
 		need_update = true;
 	}
 
@@ -76,7 +76,7 @@ namespace sgl
 		return rotation;
 	}
 
-	glm::vec3 Transform::transformPoint(const glm::vec3 &point) const 
+	glm::vec3 Transform::transformPoint(const glm::vec3 &point) const
 	{
 		return glm::vec3{
 			point.x * _transform[0].x + point.y * _transform[1].x + point.z * _transform[2].x + _transform[3].x,

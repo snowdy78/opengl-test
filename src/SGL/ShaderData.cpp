@@ -59,23 +59,23 @@ namespace sgl
 		create(this->type, source_code);
 		return true;
 	}
-	ShaderData::ShaderData(ShaderData &&other) 
+	ShaderData::ShaderData(ShaderData &&other)
 	{
-	    shader = other.shader;
-	    other.shader = 0;
-	    type = other.type;
-	    other.type = Unknown;
-	    buffer_type = other.buffer_type;
+		shader		 = other.shader;
+		other.shader = 0;
+		type		 = other.type;
+		other.type	 = Unknown;
+		buffer_type	 = other.buffer_type;
 	}
-	bool ShaderData::exist() const 
+	bool ShaderData::exist() const
 	{
 		return shader != 0;
 	}
-	ShaderData::BufferAllocationType ShaderData::getBufferAllocType() const 
-	{    
+	ShaderData::BufferAllocationType ShaderData::getBufferAllocType() const
+	{
 		return buffer_type;
 	}
-	void ShaderData::setBufferAllocType(BufferAllocationType type) 
+	void ShaderData::setBufferAllocType(BufferAllocationType type)
 	{
 		buffer_type = type;
 	}
@@ -95,13 +95,13 @@ namespace sgl
 		file.close();
 		return source_code;
 	}
-	void ShaderData::create(Type type, const std::string &source_code) 
+	void ShaderData::create(Type type, const std::string &source_code)
 	{
-		if (type == Unknown) 
+		if (type == Unknown)
 			throw std::runtime_error("Unknown shader type");
 		if (shader != 0)
 			glDeleteShader(shader);
-		shader = glCreateShader(type);
+		shader	= glCreateShader(type);
 		auto sc = source_code.c_str();
 		glShaderSource(shader, 1, &sc, nullptr);
 	}

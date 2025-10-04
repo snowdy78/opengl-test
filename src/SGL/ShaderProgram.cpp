@@ -43,7 +43,7 @@ namespace sgl
 		}
 		for (auto &point: point_array)
 		{
-			point	 = transform.transformPoint(point);
+			point = transform.transformPoint(point);
 		}
 		auto points = point_array.toArray3();
 		if (vertex_array != 0)
