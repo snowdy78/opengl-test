@@ -25,6 +25,7 @@ int main()
 		window.clear({ 0.1, 0.2, 0.3, 1.0 });
 		window.draw(shader);
 		window.draw(shader2);
+		window.clearArea({ 0, 100, 400, 300 }, { 0.1, 0.2, 0.3, 1.0 });
 		window.update();
 		glfwPollEvents();
 	}

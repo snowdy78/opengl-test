@@ -26,6 +26,7 @@ namespace sgl
 		glm::ivec2 getSize() const;
 		bool isOpen() const;
 		void clear(const Color &color = Color::black);
+		void clearArea(const area2d<float> &area, const Color &color = Color::black);
 		void draw(const Drawable &drawable) const;
 		void update() const;
 

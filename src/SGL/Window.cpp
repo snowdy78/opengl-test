@@ -34,6 +34,16 @@ namespace sgl
 		glClearColor(color.r, color.g, color.b, color.a);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
+
+	void Window::clearArea(const area2d<float> &area, const Color &color)
+	{
+		auto converted = area.convert<GLint>();
+		glEnable(GL_SCISSOR_TEST);
+		glScissor(converted.left, converted.top, converted.width, converted.height);
+		glClearColor(color.r, color.g, color.b, color.a);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDisable(GL_SCISSOR_TEST);
+	}
 	void Window::draw(const Drawable &drawable) const
 	{
 		drawable.draw();
