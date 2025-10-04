@@ -19,6 +19,7 @@ AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: false
+SortIncludes: false
 BraceWrapping: 
   AfterCaseLabel: true
   AfterClass: true
