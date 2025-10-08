@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include <string>
 #include "SGLdecl.hpp"
 
@@ -25,6 +24,8 @@ namespace sgl
 			program.assignVertices(begin, end);
 		}
 		void setVertex(size_t i, const Vertex &vertex);
+		void setPrimitiveType(ShaderProgram::PrimitiveType type);
+		ShaderProgram::PrimitiveType getPrimitiveType() const;
 		void draw() const override;
 		void onTransformUpdate() override;
 	};

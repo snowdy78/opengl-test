@@ -27,4 +27,12 @@ namespace sgl
 	{
 		program.build();
 	}
+	void Shader::setPrimitiveType(ShaderProgram::PrimitiveType type)
+	{
+		program.setPrimitiveType(type);
+	}
+	ShaderProgram::PrimitiveType Shader::getPrimitiveType() const
+	{
+		return program.getPrimitiveType();
+	}
 } // namespace sgl
