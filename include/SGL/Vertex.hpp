@@ -3,6 +3,7 @@
 
 #include "SGL/SGLdecl.hpp"
 #include "Color.hpp"
+#include <glm/vec3.hpp>
 
 namespace sgl
 {
