@@ -2,6 +2,7 @@
 
 #include <functional>
 #include "Color.hpp"
+#include "GLFW/glfw3.h"
 #include "glm/fwd.hpp"
 #include "SGL/Math/Area.hpp"
 
@@ -29,6 +30,7 @@ namespace sgl
 		void clearArea(const area2d<float> &area, const Color &color = Color::black);
 		void draw(const Drawable &drawable) const;
 		void update() const;
+		void setMSAA(bool value);
 
 		void setMouseMoveCallback(const std::function<void(const glm::vec2 &)> &callback);
 	};

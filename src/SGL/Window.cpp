@@ -5,9 +5,10 @@
 
 namespace sgl
 {
-
 	Window::Window(const glm::ivec2 &size, const char *title)
 	{
+		constexpr static int samples = 4; // TODO change sample count
+		glfwWindowHint(GLFW_SAMPLES, samples);
 		window = glfwCreateWindow(size.x, size.y, title, nullptr, nullptr);
 		if (!window)
 		{
@@ -66,5 +67,16 @@ namespace sgl
 		glm::ivec2 size;
 		glfwGetWindowSize(window, &size.x, &size.y);
 		return size;
+	}
+	void Window::setMSAA(bool value)
+	{
+		if (value)
+		{
+			glEnable(GL_MULTISAMPLE);
+		}
+		else
+		{
+			glDisable(GL_MULTISAMPLE);
+		}
 	}
 } // namespace sgl

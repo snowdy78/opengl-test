@@ -12,6 +12,7 @@ int main()
 		{ { 0.0f, 0.5f, 0.0f },	{ 1.0f, 0.0f, 0.0f } },
 	};
 	Window window({ 800, 600 }, "Triangle");
+	window.setMSAA(true);
 	Shader shader{ "triangle.vert", "triangle.frag" };
 	Shader shader2{ "triangle.vert", "triangle.frag" };
 	shader2.assignVertices(vertices.begin(), vertices.end());
