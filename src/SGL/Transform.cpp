@@ -57,8 +57,9 @@ namespace sgl
 
 	void Transform::rotate(float angle, const RotationAxis &axis)
 	{
-		rotation	= angle;
-		need_update = true;
+		rotation	  = angle;
+		rotation_axis = axis;
+		need_update	  = true;
 	}
 
 	glm::vec3 Transform::getPosition() const
