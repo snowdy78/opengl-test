@@ -2,7 +2,7 @@
 
 #include <string>
 #include "SGL\SGLfwd.hpp"
-
+#include <fstream>
 
 namespace sgl
 {
@@ -31,15 +31,13 @@ namespace sgl
 		GLuint shader					 = 0;
 
 		friend class ShaderProgram;
-		std::string loadFromFile(const std::string &path);
-		void create(Type type, const std::string &source_code);
+		void create(const std::string &source_code);
 
 	public:
-		ShaderData();
-		ShaderData(Type type, const std::string &code_str);
+		ShaderData(Type type);
 		~ShaderData();
 
-		bool load(const std::string &path, Type type);
+		bool setCode(const std::string &code);
 		ShaderData(const ShaderData &another_shader) = delete;
 		ShaderData(ShaderData &&other);
 		bool exist() const;
@@ -50,4 +48,13 @@ namespace sgl
 		bool compile() const;
 		void remove();
 	};
+	/**
+	 * @brief Get the File Data object
+	 *
+	 * @param path - path to file
+	 * @param openmode -
+	 * @return std::string
+	 */
+	std::string getFileData(const std::string &path, std::ios_base::openmode openmode = std::ios_base::in);
+
 } // namespace sgl

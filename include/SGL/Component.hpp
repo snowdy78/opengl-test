@@ -11,8 +11,11 @@ namespace sgl
 	{
 	public:
 		Component() {}
-		virtual void onTransformUpdate() {}
 		virtual ~Component() = 0;
+
+	protected:
+		friend void Transform::update();
+		virtual void onTransformUpdate() {}
 	};
 	inline Component::~Component() = default;
 } // namespace sgl

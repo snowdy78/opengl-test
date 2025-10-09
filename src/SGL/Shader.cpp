@@ -5,10 +5,10 @@ namespace sgl
 {
 	Shader::Shader(const std::string &vertex_shader_code, const std::string &fragment_shader_code)
 	{
-		ShaderData vertex_shader;
-		vertex_shader.load(vertex_shader_code, ShaderData::Vertex);
-		ShaderData fragment_shader;
-		fragment_shader.load(fragment_shader_code, ShaderData::Fragment);
+		ShaderData vertex_shader(ShaderData::Vertex);
+		vertex_shader.setCode(getFileData(vertex_shader_code));
+		ShaderData fragment_shader(ShaderData::Fragment);
+		fragment_shader.setCode(getFileData(fragment_shader_code));
 		program.emplace_back(std::move(vertex_shader));
 		program.emplace_back(std::move(fragment_shader));
 		program.transform.bind(this);

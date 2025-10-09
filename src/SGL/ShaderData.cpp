@@ -8,13 +8,9 @@
 
 namespace sgl
 {
-	ShaderData::ShaderData() {}
-
-	ShaderData::ShaderData(Type type, const std::string &code_str)
+	ShaderData::ShaderData(Type type)
 		: type(type)
-	{
-		create(type, code_str);
-	}
+	{}
 	ShaderData::~ShaderData() {}
 	ShaderData::Type ShaderData::getType() const
 	{
@@ -48,15 +44,13 @@ namespace sgl
 		if (exist())
 			glDeleteShader(shader);
 	}
-	bool ShaderData::load(const std::string &path, Type type)
+	bool ShaderData::setCode(const std::string &code)
 	{
-		std::string source_code = loadFromFile(path);
-		if (source_code.empty())
+		if (code.empty())
 		{
 			return false;
 		}
-		this->type = type;
-		create(this->type, source_code);
+		create(code);
 		return true;
 	}
 	ShaderData::ShaderData(ShaderData &&other)
@@ -79,9 +73,20 @@ namespace sgl
 	{
 		buffer_type = type;
 	}
-	std::string ShaderData::loadFromFile(const std::string &path)
+	void ShaderData::create(const std::string &source_code)
 	{
-		std::ifstream file(path);
+		if (type == Unknown)
+			throw std::runtime_error("Unknown shader type");
+		if (shader != 0)
+			glDeleteShader(shader);
+		shader	= glCreateShader(type);
+		auto sc = source_code.c_str();
+		glShaderSource(shader, 1, &sc, nullptr);
+	}
+
+	std::string getFileData(const std::string &path, std::ios_base::openmode openmode)
+	{
+		auto file = std::ifstream(path, openmode);
 		if (!file.is_open())
 		{
 			throw std::runtime_error("File not found '" + path + "'");
@@ -95,15 +100,4 @@ namespace sgl
 		file.close();
 		return source_code;
 	}
-	void ShaderData::create(Type type, const std::string &source_code)
-	{
-		if (type == Unknown)
-			throw std::runtime_error("Unknown shader type");
-		if (shader != 0)
-			glDeleteShader(shader);
-		shader	= glCreateShader(type);
-		auto sc = source_code.c_str();
-		glShaderSource(shader, 1, &sc, nullptr);
-	}
-
 } // namespace sgl

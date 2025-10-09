@@ -42,9 +42,7 @@ namespace sgl
 
 	public:
 		mutable Transform transform;
-		ShaderProgram()
-			: vertex_buffers(2, {})
-		{}
+		ShaderProgram();
 		ShaderProgram(const ShaderProgram &)			= delete;
 		ShaderProgram &operator=(const ShaderProgram &) = delete;
 		~ShaderProgram();
@@ -61,6 +59,9 @@ namespace sgl
 		void assignVertices(Iter begin, const Iter &end);
 		const Vertex &getVertex(size_t i) const;
 		void setVertex(size_t i, const Vertex &v);
+
+	protected:
+		void onTransformUpdate() const;
 	};
 
 	template<class Iter>

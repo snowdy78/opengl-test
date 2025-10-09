@@ -1,9 +1,12 @@
 #include "SGL/ShaderProgram.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "..\..\include\SGL\SGLfwd.hpp"
+
 namespace sgl
 {
+	ShaderProgram::ShaderProgram()
+		: vertex_buffers(2, {})
+	{}
 	void ShaderProgram::makeBuild() const
 	{
 		if (size() == 0)
@@ -91,6 +94,10 @@ namespace sgl
 
 	void ShaderProgram::render() const
 	{
+		if (transform.isNeedUpdate())
+		{
+			transform.update();
+		}
 		if (need_build)
 		{
 			makeBuild();
@@ -135,4 +142,8 @@ namespace sgl
 		build();
 	}
 
+	void ShaderProgram::onTransformUpdate() const
+	{
+		build();
+	}
 } // namespace sgl
