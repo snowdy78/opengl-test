@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "SGL/Transform.hpp"
-#include "SGLdecl.hpp"
+#include "SGL\SGLfwd.hpp"
 
 #include "ShaderData.hpp"
 #include "VertexArray.hpp"

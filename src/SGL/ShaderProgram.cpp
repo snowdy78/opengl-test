@@ -1,9 +1,7 @@
 #include "SGL/ShaderProgram.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "SGL/SGLdecl.hpp"
-
-
+#include "..\..\include\SGL\SGLfwd.hpp"
 namespace sgl
 {
 	void ShaderProgram::makeBuild() const

@@ -1,5 +1,5 @@
 #include <stdexcept>
-#include "SGL/SGLdecl.hpp"
+#include "..\..\include\SGL\SGLfwd.hpp"
 
 namespace sgl
 {

@@ -1,4 +1,4 @@
-#include "SGLdecl.hpp"
+#include "SGL\SGLfwd.hpp"
 
 #include "Color.hpp"
 

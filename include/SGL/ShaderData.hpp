@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "SGLdecl.hpp"
+#include "SGL\SGLfwd.hpp"
 
 
 namespace sgl

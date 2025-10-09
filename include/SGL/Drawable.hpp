@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SGL/SGLdecl.hpp"
+#include "SGL\SGLfwd.hpp"
 
 namespace sgl
 {

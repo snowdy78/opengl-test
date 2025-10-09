@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Drawable.hpp"
-#include "SGL/SGLdecl.hpp"
+#include "SGL\SGLfwd.hpp"
 #include "Transform.hpp"
 
 
