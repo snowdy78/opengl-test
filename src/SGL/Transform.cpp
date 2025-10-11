@@ -8,16 +8,13 @@ namespace sgl
 
 	void Transform::update()
 	{
-		if (need_update)
-		{
-			_transform	= initMatrix();
-			_transform	= glm::translate(_transform, pos);
-			_transform	= glm::scale(_transform, scale_factor);
-			_transform	= glm::rotate(_transform, rotation, glm::vec3{ rotation_axis.xyz });
-			need_update = false;
-			if (_component != nullptr)
-				_component->onTransformUpdate();
-		}
+		_transform	= initMatrix();
+		_transform	= glm::translate(_transform, pos);
+		_transform	= glm::scale(_transform, scale_factor);
+		_transform	= glm::rotate(_transform, rotation, glm::vec3{ rotation_axis.xyz });
+		need_update = false;
+		if (_component != nullptr)
+			_component->onTransformUpdate();
 	}
 
 	bool Transform::isNeedUpdate() const
