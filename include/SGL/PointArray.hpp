@@ -10,6 +10,15 @@ namespace sgl
 	{
 	public:
 		using std::vector<Point>::vector;
+		/**
+		 * @brief calculates size in bytes
+		 *
+		 * @return size_t
+		 */
+		size_t length() const noexcept
+		{
+			return sizeof(PointArray::value_type) * size();
+		}
 		std::vector<glm::vec3::value_type> toArray3() const noexcept
 		{
 			std::vector<glm::vec3::value_type> matrix;

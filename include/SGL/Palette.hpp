@@ -11,7 +11,15 @@ namespace sgl
 	{
 	public:
 		using std::vector<Color>::vector;
-
+		/**
+		 * @brief calculates size in bytes
+		 *
+		 * @return size_t
+		 */
+		size_t length() const noexcept
+		{
+			return sizeof(Palette::value_type::value_type) * size();
+		}
 		/**
 		 * @brief simplify the colors of palette (reduces the alpha channel)
 		 *
