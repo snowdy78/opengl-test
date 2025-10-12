@@ -5,5 +5,5 @@
 #include "Math\Math.hpp"
 #include "ShaderData.hpp"
 #include "ShaderProgram.hpp"
-#include "Shader.hpp"
+#include "BasicShader.hpp"
 #include "Window.hpp"

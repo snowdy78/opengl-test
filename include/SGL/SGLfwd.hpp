@@ -10,9 +10,9 @@ namespace sgl
 	class Window;
 	class Color;
 
-	struct Shader;
+	struct BasicShader;
 	class ShaderProgram;
-	class ShaderBuildSystem;
+
 	class Drawable;
 	class Transform;
 	class Component;

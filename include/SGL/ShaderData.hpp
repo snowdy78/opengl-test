@@ -1,13 +1,19 @@
 #pragma once
 
+#include <ios>
 #include <string>
 #include "SGL\SGLfwd.hpp"
-#include <fstream>
+#include <vector>
+#include <functional>
+#include "SGL/Graphics/buffer.hpp"
+#include "SGL/Graphics/layout.hpp"
 
 namespace sgl
 {
 	struct ShaderData
 	{
+		friend class ShaderProgram;
+
 		enum Type
 		{
 			Vertex		   = GL_VERTEX_SHADER,
@@ -18,35 +24,55 @@ namespace sgl
 			Compute		   = GL_COMPUTE_SHADER,
 			Unknown		   = -1
 		};
-		enum BufferAllocationType
-		{
-			Static	= GL_STATIC_DRAW,
-			Dynamic = GL_DYNAMIC_DRAW,
-			Stream	= GL_STREAM_DRAW
-		};
 
 	private:
-		BufferAllocationType buffer_type = Static;
-		Type type						 = Unknown;
-		GLuint shader					 = 0;
+		Type m_type{ Unknown };
+		std::vector<buffer> m_buffers{};
+		mutable std::vector<GLuint> m_descriptors_of_buffers{};
+		std::vector<layout> m_layouts{};
 
-		friend class ShaderProgram;
+		bool isBuffersGenerated() const;
+		void assignBuffersDescriptors() const;
+		void clearBuffersDescriptors() const;
+		void enableVertexAttribArray(size_t location) const;
+		void disableVertexAttribArray(size_t location) const;
+		void attribPointer(size_t layout_index) const;
+		void genBuffers() const;
+		void deleteBuffers() const;
+
+		void bindBuffer(size_t index) const;
+		void unbindBuffer(size_t index) const;
+		void bufferData(size_t index) const;
+		GLuint m_shader = 0;
+
+	public:
+		std::function<void()> prebuild = []() {};
+
+	private:
 		void create(const std::string &source_code);
 
 	public:
 		ShaderData(Type type);
 		~ShaderData();
-
 		bool setCode(const std::string &code);
 		ShaderData(const ShaderData &another_shader) = delete;
 		ShaderData(ShaderData &&other);
 		bool exist() const;
-		GLuint getDescriptor() const; // TODO move to private
-		BufferAllocationType getBufferAllocType() const;
-		void setBufferAllocType(BufferAllocationType type);
+		void eraseBuffer(size_t index);
+		void pushBuffer(buffer &&buffer, layout &&layout);
+		template<class T>
+		void makeLayout(
+			size_t location, buffer::target_type target, buffer::usage_type usage, const T *buffer_data, size_t size,
+			layout::GLType type = layout::Float, bool normalized = false, size_t stride = 0, void *pointer = nullptr
+		);
+		void clearBuffers();
+		size_t getBufferCount() const noexcept;
+		const buffer &getBuffer(size_t index) const;
 		Type getType() const;
+		void build() const;
 		bool compile() const;
 		void remove();
+		void attach(const ShaderProgram &program) const;
 	};
 	/**
 	 * @brief Get the File Data object
