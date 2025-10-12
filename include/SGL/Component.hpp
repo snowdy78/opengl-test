@@ -10,7 +10,11 @@ namespace sgl
 	class Component : public Drawable
 	{
 	public:
-		Component() {}
+		mutable Transform transform;
+		Component()
+		{
+			transform.bind(this);
+		}
 		virtual ~Component() = 0;
 
 	protected:
