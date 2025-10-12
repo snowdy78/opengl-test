@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SGL/SGLfwd.hpp"
-#include <vector>
 
 namespace sgl
 {
