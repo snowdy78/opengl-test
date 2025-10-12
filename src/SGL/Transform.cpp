@@ -42,18 +42,24 @@ namespace sgl
 
 	void Transform::translate(const glm::vec3 &vec)
 	{
+		if (pos == vec)
+			return;
 		pos			= vec;
 		need_update = true;
 	}
 
 	void Transform::scale(const glm::vec3 &vec)
 	{
+		if (scale_factor == vec)
+			return;
 		scale_factor = vec;
 		need_update	 = true;
 	}
 
 	void Transform::rotate(float angle, const RotationAxis &axis)
 	{
+		if (rotation == angle && rotation_axis.xyz == axis.xyz)
+			return;
 		rotation	  = angle;
 		rotation_axis = axis;
 		need_update	  = true;

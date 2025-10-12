@@ -58,14 +58,9 @@ namespace sgl
 		ShaderData(const ShaderData &another_shader) = delete;
 		ShaderData(ShaderData &&other);
 		bool exist() const;
-		void eraseBuffer(size_t index);
-		void pushBuffer(buffer &&buffer, layout &&layout);
-		template<class T>
-		void makeLayout(
-			size_t location, buffer::target_type target, buffer::usage_type usage, const T *buffer_data, size_t size,
-			layout::GLType type = layout::Float, bool normalized = false, size_t stride = 0, void *pointer = nullptr
-		);
-		void clearBuffers();
+		void erase(size_t index);
+		void push(buffer &&buffer, layout &&layout);
+		void clear();
 		size_t getBufferCount() const noexcept;
 		const buffer &getBuffer(size_t index) const;
 		Type getType() const;

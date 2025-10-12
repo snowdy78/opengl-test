@@ -111,12 +111,12 @@ namespace sgl
 	{
 		return m_buffers.size();
 	}
-	void ShaderData::pushBuffer(buffer &&buffer, sgl::layout &&layout)
+	void ShaderData::push(buffer &&buffer, sgl::layout &&layout)
 	{
 		m_buffers.push_back(std::move(buffer));
 		m_layouts.emplace_back(std::move(layout)); // add layout for buffer
 	}
-	void ShaderData::eraseBuffer(size_t index)
+	void ShaderData::erase(size_t index)
 	{
 		m_buffers.erase(m_buffers.begin() + index);
 	}
@@ -166,9 +166,10 @@ namespace sgl
 	{
 		glAttachShader(shader.program, m_shader);
 	}
-	void ShaderData::clearBuffers()
+	void ShaderData::clear()
 	{
 		m_buffers.clear();
+		m_layouts.clear();
 	}
 	void ShaderData::assignBuffersDescriptors() const
 	{

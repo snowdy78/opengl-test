@@ -35,12 +35,12 @@ namespace sgl
 			switch (shader.getType())
 			{
 				case sgl::ShaderData::Vertex:
-					shader.clearBuffers();
-					shader.pushBuffer(
+					shader.clear();
+					shader.push(
 						sgl::buffer(sgl::buffer::Array, sgl::buffer::StaticDraw, m_vao.dataPoints(), m_vao.lenPoints()),
 						sgl::layout(0, vertex_array_object::pointSize())
 					);
-					shader.pushBuffer(
+					shader.push(
 						sgl::buffer(sgl::buffer::Array, sgl::buffer::StaticDraw, m_vao.dataColors(), m_vao.lenColors()),
 						sgl::layout(1, vertex_array_object::colorSize())
 					);
