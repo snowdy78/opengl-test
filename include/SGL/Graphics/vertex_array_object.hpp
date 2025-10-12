@@ -19,6 +19,7 @@ namespace sgl
 		void assign(const std::vector<Point> &, Color general_color = Color::white);
 		void del() const;
 		void bind() const;
+		void unbind() const;
 		void push_back(const Vertex &vertex);
 		void insert(size_t index, const Vertex &vertex);
 		size_t getVertexCount() const noexcept;

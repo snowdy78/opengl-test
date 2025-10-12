@@ -1,4 +1,5 @@
 #include "SGL/Graphics/vertex_array_object.hpp"
+#include "SGL/SGLfwd.hpp"
 
 namespace sgl
 {
@@ -16,7 +17,10 @@ namespace sgl
 	}
 	void vertex_array_object::del() const
 	{
+		if (m_vertex_array == 0)
+			return;
 		glDeleteVertexArrays(1, &m_vertex_array);
+		m_vertex_array = 0;
 	}
 
 	void vertex_array_object::bind() const
@@ -141,4 +145,8 @@ namespace sgl
 		m_vertex_count--;
 	}
 
+	void vertex_array_object::unbind() const
+	{
+		glBindVertexArray(0);
+	}
 } // namespace sgl
