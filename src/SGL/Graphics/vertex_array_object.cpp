@@ -44,12 +44,12 @@ namespace sgl
 		}
 	}
 
-	void vertex_array_object::transformPoints(const std::function<glm::vec3(const glm::vec3 &)> &callback)
+	void vertex_array_object::transformPoints(const std::function<glm::vec3(const glm::vec3 &)> &transformation_func)
 	{
-		for (size_t i = 0; i < m_points.size(); i += 3)
+		for (size_t i = 0; i < m_points.size(); i += pointSize())
 		{
 			auto &x = m_points[i], &y = m_points[i + 1], &z = m_points[i + 2];
-			auto point = callback({ m_points[i], m_points[i + 1], m_points[i + 2] });
+			auto point = transformation_func({ m_points[i], m_points[i + 1], m_points[i + 2] });
 			x		   = point.x;
 			y		   = point.y;
 			z		   = point.z;
@@ -57,10 +57,11 @@ namespace sgl
 	}
 	void vertex_array_object::setVertexColor(size_t vertex, Color color)
 	{
-		m_colors[vertex * 4 + 0] = color.r;
-		m_colors[vertex * 4 + 1] = color.g;
-		m_colors[vertex * 4 + 2] = color.b;
-		m_colors[vertex * 4 + 3] = color.a;
+		auto cpos		   = vertex * colorSize();
+		m_colors[cpos]	   = color.r;
+		m_colors[cpos + 1] = color.g;
+		m_colors[cpos + 2] = color.b;
+		m_colors[cpos + 3] = color.a;
 	}
 	size_t vertex_array_object::getVertexCount() const noexcept
 	{
@@ -68,20 +69,24 @@ namespace sgl
 	}
 	Vertex vertex_array_object::vertex(size_t index) const
 	{
+		auto ppos = index * pointSize();
+		auto cpos = index * colorSize();
 		return Vertex(
-			{ m_points[index * 3], m_points[index * 3 + 1], m_points[index * 3 + 2] },
-			{ m_colors[index * 4], m_colors[index * 4 + 1], m_colors[index * 4 + 2], m_colors[index * 4 + 3] }
+			{ m_points[ppos], m_points[ppos + 1], m_points[ppos + 2] },
+			{ m_colors[cpos], m_colors[cpos + 1], m_colors[cpos + 2], m_colors[cpos + 3] }
 		);
 	}
 	void vertex_array_object::vertex(size_t index, const Vertex &vertex)
 	{
-		m_points[index * 3]		= vertex.position.x;
-		m_points[index * 3 + 1] = vertex.position.y;
-		m_points[index * 3 + 2] = vertex.position.z;
-		m_colors[index * 4]		= vertex.color.r;
-		m_colors[index * 4 + 1] = vertex.color.g;
-		m_colors[index * 4 + 2] = vertex.color.b;
-		m_colors[index * 4 + 3] = vertex.color.a;
+		auto ppos		   = index * pointSize();
+		auto cpos		   = index * colorSize();
+		m_points[ppos]	   = vertex.position.x;
+		m_points[ppos + 1] = vertex.position.y;
+		m_points[ppos + 2] = vertex.position.z;
+		m_colors[cpos]	   = vertex.color.r;
+		m_colors[cpos + 1] = vertex.color.g;
+		m_colors[cpos + 2] = vertex.color.b;
+		m_colors[cpos + 3] = vertex.color.a;
 	}
 	void vertex_array_object::push_back(const Vertex &vertex)
 	{
@@ -96,13 +101,15 @@ namespace sgl
 	}
 	void vertex_array_object::insert(size_t index, const Vertex &vertex)
 	{
-		m_points.insert(m_points.begin() + index * 3, vertex.position.z);
-		m_points.insert(m_points.begin() + index * 3, vertex.position.y);
-		m_points.insert(m_points.begin() + index * 3, vertex.position.x);
-		m_colors.insert(m_colors.begin() + index * 4, vertex.color.a);
-		m_colors.insert(m_colors.begin() + index * 4, vertex.color.b);
-		m_colors.insert(m_colors.begin() + index * 4, vertex.color.g);
-		m_colors.insert(m_colors.begin() + index * 4, vertex.color.r);
+		auto ppos = m_points.begin() + index * pointSize();
+		auto cpos = m_colors.begin() + index * colorSize();
+		m_points.insert(ppos, vertex.position.z);
+		m_points.insert(ppos, vertex.position.y);
+		m_points.insert(ppos, vertex.position.x);
+		m_colors.insert(ppos, vertex.color.a);
+		m_colors.insert(cpos, vertex.color.b);
+		m_colors.insert(cpos, vertex.color.g);
+		m_colors.insert(cpos, vertex.color.r);
 		m_vertex_count++;
 	}
 	size_t vertex_array_object::lenPoints() const noexcept
@@ -127,8 +134,10 @@ namespace sgl
 	}
 	void vertex_array_object::erase(size_t index)
 	{
-		m_points.erase(m_points.begin() + index * 3, m_points.begin() + index * 3 + 3);
-		m_colors.erase(m_colors.begin() + index * 4, m_colors.begin() + index * 4 + 4);
+		auto ppos = m_points.begin() + index * pointSize();
+		auto cpos = m_colors.begin() + index * colorSize();
+		m_points.erase(ppos, ppos + 3);
+		m_colors.erase(cpos, cpos + 4);
 		m_vertex_count--;
 	}
 

@@ -55,7 +55,7 @@ namespace sgl
 			return 4;
 		}
 		static size_t valueTypeSize() noexcept;
-		void transformPoints(const std::function<Point(const Point &)> &callback);
+		void transformPoints(const std::function<Point(const Point &)> &transformation_func);
 		void setVertexColor(size_t vertex, Color color);
 		const float *dataPoints() const noexcept;
 		const float *dataColors() const noexcept;
