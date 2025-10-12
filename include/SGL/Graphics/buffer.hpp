@@ -43,7 +43,9 @@ namespace sgl
 		target_type m_target_type;
 		usage_type m_usage_type;
 		size_t m_item_length;
-		std::vector<const void *> m_buffer{};
+		size_t m_size;
+		size_t m_length;
+		const void *m_data{};
 
 	public:
 		/**
@@ -86,18 +88,16 @@ namespace sgl
 		buffer &operator=(buffer &&other) noexcept;
 	};
 	template<class T>
-	inline void buffer::assign(const T *data, size_t count)
+	void buffer::assign(const T *data, size_t count)
 	{
 		m_item_length = sizeof(T);
-		auto end	  = data + count;
-		for (auto i = data; i != end; ++i)
-		{
-			m_buffer.push_back(i);
-		}
+		m_size		  = count;
+		m_data		  = static_cast<const void *>(data);
+		m_length	  = count * m_item_length;
 	}
 
 	template<class T>
-	inline buffer::buffer(target_type target, usage_type usage, const T *data, size_t count)
+	buffer::buffer(target_type target, usage_type usage, const T *data, size_t count)
 		: m_target_type(target),
 		  m_usage_type(usage),
 		  m_item_length(sizeof(T))
